@@ -10,11 +10,11 @@ const args = process.argv.slice(2);
 const watch = args.includes("--watch");
 
 // Extract --outDir and its value
-const outDirFlag = args.find(arg => arg.startsWith("--outDir="));
+const outDirFlag = args.find((arg) => arg.startsWith("--outDir="));
 const outDir = outDirFlag ? outDirFlag.split("=")[1] : "src"; // default output directory
 
 // Get model name (the first non-flag argument that’s not part of --outDir)
-const modelName = args.find(arg => !arg.startsWith("--"));
+const modelName = args.find((arg) => !arg.startsWith("--"));
 
 if (!modelName && !watch) {
   console.error("❌ Please provide a model name or use --watch");
@@ -28,11 +28,15 @@ async function generate(model: string) {
 }
 
 if (watch) {
-  console.log(`👀 Watching for changes in schema.prisma (output to "${outDir}")...`);
+  console.log(
+    `👀 Watching for changes in schema.prisma (output to "${outDir}")...`,
+  );
   chokidar.watch("schema.prisma").on("change", async () => {
     console.log("📄 Detected change in schema.prisma...");
     const content = fs.readFileSync("schema.prisma", "utf-8");
-    const modelMatches = [...content.matchAll(/model\s+(\w+)\s+{/g)].map(m => m[1]);
+    const modelMatches = [...content.matchAll(/model\s+(\w+)\s+{/g)].map(
+      (m) => m[1],
+    );
 
     for (const model of modelMatches) {
       await generate(model);
@@ -41,4 +45,3 @@ if (watch) {
 } else if (modelName) {
   generate(modelName);
 }
-

@@ -1,6 +1,5 @@
 import fs from "fs";
 
-
 export interface ParsedField {
   name: string;
   prismaType: string;
@@ -8,7 +7,7 @@ export interface ParsedField {
   type: string;
   isOptional: boolean;
   isRelation: boolean;
-  relationType: 'one-to-many' | 'many-to-one' | null;
+  relationType: "one-to-many" | "many-to-one" | null;
   validators: string[];
 }
 
@@ -55,8 +54,8 @@ export function parseModel(modelName: string): ScalarField[] {
         isRelation && isArray
           ? "one-to-many"
           : isRelation && !isArray
-          ? "many-to-one"
-          : null;
+            ? "many-to-one"
+            : null;
 
       // Skip relation fields
       if (relationType !== null) {
@@ -67,7 +66,7 @@ export function parseModel(modelName: string): ScalarField[] {
         cleanType,
         isOptional,
         isArray,
-        name
+        name,
       );
 
       return {
@@ -86,7 +85,6 @@ export function parseModel(modelName: string): ScalarField[] {
   return fields;
 }
 
-
 function mapPrismaTypeToTsType(
   prismaType: string,
   isOptional: boolean,
@@ -103,7 +101,16 @@ function mapPrismaTypeToTsType(
   const isEmailField = fieldName.toLowerCase().includes("email");
 
   const decorate = (decorator: string, msg: string): string =>
-    ["IsString", "IsOptional", "IsDate", "IsInt", "IsNumber", "IsBoolean", "IsObject", "IsEmail"].includes(decorator)
+    [
+      "IsString",
+      "IsOptional",
+      "IsDate",
+      "IsInt",
+      "IsNumber",
+      "IsBoolean",
+      "IsObject",
+      "IsEmail",
+    ].includes(decorator)
       ? `@${decorator}()`
       : `@${decorator}({ message: '${msg}' })`;
 
@@ -111,9 +118,16 @@ function mapPrismaTypeToTsType(
     case "String":
       tsType = "string";
       if (isEmailField) {
-        validators.push(decorate("IsEmail", `${label} must be a valid email address, sweetpea.`));
+        validators.push(
+          decorate(
+            "IsEmail",
+            `${label} must be a valid email address, sweetpea.`,
+          ),
+        );
       } else {
-        validators.push(decorate("IsString", `${label} must be text, darlin'!`));
+        validators.push(
+          decorate("IsString", `${label} must be text, darlin'!`),
+        );
       }
       break;
     case "Int":
@@ -122,19 +136,27 @@ function mapPrismaTypeToTsType(
       break;
     case "Float":
       tsType = "number";
-      validators.push(decorate("IsNumber", `${label} should be a floatin’ number, hun.`));
+      validators.push(
+        decorate("IsNumber", `${label} should be a floatin’ number, hun.`),
+      );
       break;
     case "Boolean":
       tsType = "boolean";
-      validators.push(decorate("IsBoolean", `${label} must be true or false, hon.`));
+      validators.push(
+        decorate("IsBoolean", `${label} must be true or false, hon.`),
+      );
       break;
     case "DateTime":
       tsType = "Date";
-      validators.push(decorate("IsDate", `${label} must be a proper date, sweetheart.`));
+      validators.push(
+        decorate("IsDate", `${label} must be a proper date, sweetheart.`),
+      );
       break;
     case "Json":
       tsType = "any";
-      validators.push(decorate("IsObject", `${label} must be a valid object, sugarplum.`));
+      validators.push(
+        decorate("IsObject", `${label} must be a valid object, sugarplum.`),
+      );
       break;
     default:
       tsType = "string";
@@ -148,4 +170,3 @@ function mapPrismaTypeToTsType(
 
   return { tsType, validators };
 }
-

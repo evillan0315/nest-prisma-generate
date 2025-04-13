@@ -3,13 +3,11 @@ import path from "path";
 
 export function updateAppModule(modelName: string, outDir: string = "src") {
   const className = capitalize(modelName);
-  const sourcePath = path.join(outDir, 'src', 'app.module.ts');
-  const destinationPath = path.join(outDir, 'generated', 'app.module.ts');
+  const sourcePath = path.join(outDir, "src", "app.module.ts");
+  const destinationPath = path.join(outDir, "generated", "app.module.ts");
   // Paths
   const sourceAppModulePath = path.resolve(sourcePath);
   const targetAppModulePath = path.resolve(destinationPath);
-  
-  
 
   // Create the output directory if it doesn't exist
   fs.mkdirSync(outDir, { recursive: true });
@@ -21,7 +19,10 @@ export function updateAppModule(modelName: string, outDir: string = "src") {
   }
 
   const importPath = path
-    .relative(path.dirname(targetAppModulePath), path.resolve(outDir, modelName, "module", `${modelName}.module`))
+    .relative(
+      path.dirname(targetAppModulePath),
+      path.resolve(outDir, modelName, "module", `${modelName}.module`),
+    )
     .replace(/\\/g, "/")
     .replace(/\.ts$/, "");
 
@@ -51,4 +52,3 @@ export function updateAppModule(modelName: string, outDir: string = "src") {
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
