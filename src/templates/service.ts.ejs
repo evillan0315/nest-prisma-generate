@@ -1,0 +1,30 @@
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { Create<%= className %>Dto } from './dto/create-<%= fileName %>.dto';
+import { Update<%= className %>Dto } from './dto/update-<%= fileName %>.dto';
+
+@Injectable()
+export class <%= className %>Service {
+  constructor(private prisma: PrismaService) {}
+
+  create(data: Create<%= className %>Dto) {
+    return this.prisma.<%= fileName %>.create({ data });
+  }
+
+  findAll() {
+    return this.prisma.<%= fileName %>.findMany();
+  }
+
+  findOne(id: string) {
+    return this.prisma.<%= fileName %>.findUnique({ where: { id } });
+  }
+
+  update(id: string, data: Update<%= className %>Dto) {
+    return this.prisma.<%= fileName %>.update({ where: { id }, data });
+  }
+
+  remove(id: string) {
+    return this.prisma.<%= fileName %>.delete({ where: { id } });
+  }
+}
+

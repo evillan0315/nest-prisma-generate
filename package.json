@@ -1,0 +1,32 @@
+{
+  "name": "nest-prisma-generate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/cli.ts --",
+    "start:watch": "ts-node src/cli.ts --watch --",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/node": "^22.14.1",
+    "ejs": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "prettier": "^3.4.2",
+    "@nestjs/cli": "^11.0.0"
+  },
+  "dependencies": {
+    "@nestjs/swagger": "^11.1.2",
+    "chokidar": "^4.0.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
+

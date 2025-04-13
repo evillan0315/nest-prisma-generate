@@ -1,0 +1,55 @@
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from '../admin/roles/roles.decorator';
+import { Role } from '../admin/roles/role.enum';
+import { RolesGuard } from '../admin/roles/roles.guard';
+import { CognitoGuard } from '../aws/cognito/cognito.guard';
+
+import { <%= className %>Service } from './<%= fileName %>.service';
+import { Create<%= className %>Dto } from './dto/create-<%= fileName %>.dto';
+import { Update<%= className %>Dto } from './dto/update-<%= fileName %>.dto';
+
+
+@ApiBearerAuth()
+@UseGuards(CognitoGuard, RolesGuard)
+@ApiTags('<%= className %>')
+@Controller('<%= fileName %>')
+export class <%= className %>Controller {
+  constructor(private readonly <%= fileName %>Service: <%= className %>Service) {}
+
+  @Post()
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @ApiOperation({ summary: 'Create new <%= className %>' })
+  create(@Body() dto: Create<%= className %>Dto) {
+    return this.<%= fileName %>Service.create(dto);
+  }
+
+  @Get()
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @ApiOperation({ summary: 'Get all <%= className %> records' })
+  findAll() {
+    return this.<%= fileName %>Service.findAll();
+  }
+
+  @Get(':id')
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @ApiOperation({ summary: 'Get one <%= className %> by ID' })
+  findOne(@Param('id') id: string) {
+    return this.<%= fileName %>Service.findOne(id);
+  }
+
+  @Patch(':id')
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @ApiOperation({ summary: 'Update <%= className %> by ID' })
+  update(@Param('id') id: string, @Body() dto: Update<%= className %>Dto) {
+    return this.<%= fileName %>Service.update(id, dto);
+  }
+
+  @Delete(':id')
+  @Roles(Role.ADMIN, Role.SUPERADMIN)
+  @ApiOperation({ summary: 'Delete <%= className %> by ID' })
+  remove(@Param('id') id: string) {
+    return this.<%= fileName %>Service.remove(id);
+  }
+}
+
